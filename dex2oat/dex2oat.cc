@@ -657,8 +657,6 @@ class WatchDog {
     // TODO: tune the multiplier for GC verification, the following is just to make the timeout
     //       large.
     int64_t multiplier = kVerifyObjectSupport > kVerifyObjectModeFast ? 100 : 1;
-    timespec warning_ts;
-    InitTimeSpec(true, CLOCK_REALTIME, multiplier * kWatchDogWarningSeconds * 1000, 0, &warning_ts);
     timespec timeout_ts;
     InitTimeSpec(true, CLOCK_REALTIME, multiplier * kWatchDogTimeoutSeconds * 1000, 0, &timeout_ts);
     const char* reason = "dex2oat watch dog thread waiting";
@@ -680,13 +678,9 @@ class WatchDog {
   // Debug builds are slower so they have larger timeouts.
   static const unsigned int kSlowdownFactor = kIsDebugBuild ? 5U : 1U;
 #if ART_USE_PORTABLE_COMPILER
-  // 2 minutes scaled by kSlowdownFactor.
-  static const unsigned int kWatchDogWarningSeconds = kSlowdownFactor * 2 * 60;
   // 30 minutes scaled by kSlowdownFactor.
   static const unsigned int kWatchDogTimeoutSeconds = kSlowdownFactor * 30 * 60;
 #else
-  // 1 minutes scaled by kSlowdownFactor.
-  static const unsigned int kWatchDogWarningSeconds = kSlowdownFactor * 1 * 60;
   // 6 minutes scaled by kSlowdownFactor.
   static const unsigned int kWatchDogTimeoutSeconds = kSlowdownFactor * 6 * 60;
 #endif

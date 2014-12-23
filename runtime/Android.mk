@@ -399,6 +399,13 @@ $$(ENUM_OPERATOR_OUT_GEN): $$(GENERATED_SRC_DIR)/%_operator_out.cc : $(LOCAL_PAT
     # TODO: Loop with ifeq, ART_TARGET_CLANG
     ifneq ($$(ART_TARGET_CLANG_$$(TARGET_ARCH)),true)
       LOCAL_SRC_FILES_$$(TARGET_ARCH) += $$(LIBART_GCC_ONLY_SRC_FILES)
+      ifeq ($$(TARGET_ARCH),arm)
+        ifneq ($$(filter 4.9 4.9%, $$(TARGET_GCC_VERSION)),)
+          # HACK: GCC 4.9 causes libart to segfault, force 4.8
+          LOCAL_CC := $$(TARGET_TOOLCHAIN_ROOT)/../arm-linux-androideabi-4.8/bin/arm-linux-androideabi-gcc$$(HOST_EXECUTABLE_SUFFIX)
+          LOCAL_CXX := $$(TARGET_TOOLCHAIN_ROOT)/../arm-linux-androideabi-4.8/bin/arm-linux-androideabi-g++$$(HOST_EXECUTABLE_SUFFIX)
+        endif
+      endif
     endif
     ifneq ($$(ART_TARGET_CLANG_$$(TARGET_2ND_ARCH)),true)
       LOCAL_SRC_FILES_$$(TARGET_2ND_ARCH) += $$(LIBART_GCC_ONLY_SRC_FILES)

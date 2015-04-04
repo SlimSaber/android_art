@@ -258,7 +258,6 @@ void MallocSpace::ClampGrowthLimit() {
   }
   GetMemMap()->SetSize(new_capacity);
   limit_ = Begin() + new_capacity;
-  CHECK(temp_bitmap_.get() == nullptr);
 }
 
 }  // namespace space

@@ -848,11 +848,7 @@ class Dex2Oat FINAL {
     }
 
     image_ = (!image_filename_.empty());
-    if (!requested_specific_compiler && !kUseOptimizingCompiler) {
-      // If no specific compiler is requested, the current behavior is
-      // to compile the boot image with Quick, and the rest with Optimizing.
-      compiler_kind_ = image_ ? Compiler::kQuick : Compiler::kOptimizing;
-    }
+    compiler_kind_ = Compiler::kOptimizing;
 
     if (compiler_kind_ == Compiler::kOptimizing) {
       // Optimizing only supports PIC mode.
@@ -984,26 +980,7 @@ class Dex2Oat FINAL {
     }
 
     CHECK(compiler_filter_string != nullptr);
-    CompilerOptions::CompilerFilter compiler_filter = CompilerOptions::kDefaultCompilerFilter;
-    if (strcmp(compiler_filter_string, "verify-none") == 0) {
-      compiler_filter = CompilerOptions::kVerifyNone;
-    } else if (strcmp(compiler_filter_string, "interpret-only") == 0) {
-      compiler_filter = CompilerOptions::kInterpretOnly;
-    } else if (strcmp(compiler_filter_string, "verify-at-runtime") == 0) {
-      compiler_filter = CompilerOptions::kVerifyAtRuntime;
-    } else if (strcmp(compiler_filter_string, "space") == 0) {
-      compiler_filter = CompilerOptions::kSpace;
-    } else if (strcmp(compiler_filter_string, "balanced") == 0) {
-      compiler_filter = CompilerOptions::kBalanced;
-    } else if (strcmp(compiler_filter_string, "speed") == 0) {
-      compiler_filter = CompilerOptions::kSpeed;
-    } else if (strcmp(compiler_filter_string, "everything") == 0) {
-      compiler_filter = CompilerOptions::kEverything;
-    } else if (strcmp(compiler_filter_string, "time") == 0) {
-      compiler_filter = CompilerOptions::kTime;
-    } else {
-      Usage("Unknown --compiler-filter value %s", compiler_filter_string);
-    }
+    CompilerOptions::CompilerFilter compiler_filter = CompilerOptions::kEverything;
 
     // It they are not set, use default values for inlining settings.
     // TODO: We should rethink the compiler filter. We mostly save

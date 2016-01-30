@@ -188,6 +188,8 @@ art_cflags := \
   -Wshadow \
   -Wunused \
   -fvisibility=protected \
+  -Wno-error=unused-but-set-variable \
+  -Wno-error=unused-variable \
   $(art_default_gc_type_cflags)
 
 # Missing declarations: too many at the moment, as we use "extern" quite a bit.
